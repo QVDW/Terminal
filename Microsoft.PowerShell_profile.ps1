@@ -21,8 +21,8 @@ function qclone{
     Write-Host "####################################"-ForegroundColor green
     $ProjectLink = Read-Host "Enter your github clone link"
     $ProjectNaam = Read-Host "What name would you like this project to have? (No spaces)"
-    $DatabaseAnswer = Read-Host "Did you create/have a (new) database you can connect? yes/no (Default: no)"
-    if ($DatabaseAnswer -eq "yes"){
+    $DatabaseAnswer = Read-Host "Did you create/have a (new) database you can connect? y/n (Default: n)"
+    if ($DatabaseAnswer -eq "y"){
         git clone $ProjectLink $ProjectNaam
         cd $ProjectNaam
         composer update
@@ -57,12 +57,22 @@ function qswitch{
     allBranch
     $ProjectBranchExisting = Read-Host "To which branch would you like to switch?"
     git switch $ProjectBranchExisting
+    $PullQ = Read-Host "Would you like to pull from this branch? y/n (Default: n)"
+    if ($PullQ -eq "y"){
+        gpull
+    } 
+    else{
+        break
+    }
 }
 
 function qcommit{
-    allBranch
-    $CommitSwitch = Read-Host "To what branch would you like to commit?"
-    git switch $CommitSwitch
+    $BranchCommitSwitch = Read-Host "do you want to move to another branch? (Default: n)"
+    if ($BranchCommitSwitch -eq "y"){
+        allBranch
+        $CommitSwitch = Read-Host "To what branch would you like to commit?"
+        git switch $CommitSwitch  
+    }   
     $CommitMSG = Read-Host "Write a commit message"
     git commit -am $CommitMSG
     git push
