@@ -62,17 +62,24 @@ function qswitch{
         gpull
     } 
     else{
-        break
     }
 }
 
 function qcommit{
-    $BranchCommitSwitch = Read-Host "do you want to move to another branch? (Default: n)"
+    $BranchCommitSwitch = Read-Host "Do you want to move to another branch? (Default: n)"
     if ($BranchCommitSwitch -eq "y"){
         allBranch
         $CommitSwitch = Read-Host "To what branch would you like to commit?"
         git switch $CommitSwitch  
     }   
+    $CommitMSG = Read-Host "Write a commit message"
+    git commit -am $CommitMSG
+    git push
+}
+
+function qfinalcommit{
+    $merchRequest = Read-Host "What branch are you gonna make a merge request for?(Default: n)"
+    git merge $merchRequest
     $CommitMSG = Read-Host "Write a commit message"
     git commit -am $CommitMSG
     git push
@@ -91,7 +98,7 @@ function whodis{
     Write-Host "   Pepijn (Redactie stagaire)" -ForegroundColor black -BackgroundColor green
     Write-Host "   Silvester Server Freelancer" -ForegroundColor black -BackgroundColor green
     Write-Host "   Susan (Fullstack Thuis)" -ForegroundColor black -BackgroundColor green
-    Write-Host "   Willem (Redactie guy die ik wss nooit ga zien)" -ForegroundColor black -BackgroundColor green
+    Write-Host "   Willem (Oudere meneer van redactie)" -ForegroundColor black -BackgroundColor green
 }
 
 function qproject{
@@ -107,7 +114,12 @@ function qproject{
         qswitch
     }
     code .
-    npm run dev
+    $NpmRunDevQ = Read-Host "Do you want to do npm run dev? y/n (Default: n)"
+    if ($NpmRunDevQ -eq "y"){
+        npm run dev
+    } 
+    else{
+    }
 }
 
 function wya{
@@ -138,7 +150,6 @@ function allBranch {
 function idgaf {
     git commit -am 'wip' --no-verify; git push
 }
-# Additional helper functions if used elsewhere
 function dev { git checkout dev }
 function master { git checkout master }
 function createNewBranch {
@@ -157,3 +168,47 @@ function gpull { git pull }
 #Terminal opening
 oh-my-posh init pwsh --config 'C:\Users\Quinten\AppData\Local\Programs\oh-my-posh\themes\jblab_2021.omp.json' | Invoke-Expression
 dement
+
+function greset{
+    $Restore = Read-Host "Are you sure you want to reset all changes to the last commit? y/n (Default: n)"
+    if ($Restore -eq "y"){
+        git restore .
+    } 
+    else{
+        Write-Host "No changes have been made" -ForegroundColor green
+    }
+}
+
+function qmigrations{
+    Write-Host "                            "
+    Write-Host "                                         " -ForegroundColor black -BackgroundColor cyan
+    Write-Host "    qmigNew - Create a new migration     " -ForegroundColor black -BackgroundColor cyan
+    Write-Host "    qmig - Migrate database              " -ForegroundColor black -BackgroundColor cyan
+    Write-Host "    qmigrollback                         " -ForegroundColor black -BackgroundColor cyanWrite-Host "                                             " -ForegroundColor black -BackgroundColor cyan
+    Write-Host "                                         " -ForegroundColor black -BackgroundColor cyan
+    Write-Host "                            "
+}
+
+function qmigrateNew{
+    $MigrationName = Read-Host "What would you like to call your migration?"
+    php artisan make:migration $MigrationName
+}
+
+function qmigrate{
+    php artisan migrate
+}
+
+function qmigrateRollback{
+    $howMany = Read-Host "How many migrations would you like to rollback?"
+    php artisan migrate:rollback --step=$howMany
+}
+
+function gdiff{
+    $DifferenceBetween1 = Read-Host "What difference would be your main branch?"
+    $DifferenceBetween2 = Read-Host "What branch would you like to compare it with?"
+    git diff $DifferenceBetween1..$DifferenceBetween2
+}
+
+function enablesass{
+    npm run watch
+}
