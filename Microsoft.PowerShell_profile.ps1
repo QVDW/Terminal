@@ -11,6 +11,18 @@ function dement {
     Write-Host "                            "
 }
 
+function examen {
+    www
+    cd ExamenProject
+    code .
+    npm run watch
+}
+
+function examenfolder {
+    www
+    cd ExamenProject
+}
+
 function qlist{
     Write-Host "    whodis -  Did u forget someones name?    " -ForegroundColor black -BackgroundColor cyan
     Write-Host "    wya - Shows full path of current location    " -ForegroundColor black -BackgroundColor cyan
@@ -114,9 +126,9 @@ function qproject{
         qswitch
     }
     code .
-    $NpmRunDevQ = Read-Host "Do you want to do npm run dev? y/n (Default: n)"
+    $NpmRunDevQ = Read-Host "Do you want to do npm run watch? y/n (Default: n)"
     if ($NpmRunDevQ -eq "y"){
-        npm run dev
+        npm run watch
     } 
     else{
     }
